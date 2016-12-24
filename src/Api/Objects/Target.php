@@ -22,10 +22,10 @@ class Target extends AbstractObject
 	 */
 	public function toArray()
 	{
-		return [
+		return array(
 			'type' => $this->type,
 			'goid' => $this->goid,
-		];
+		);
 	}
 
 }

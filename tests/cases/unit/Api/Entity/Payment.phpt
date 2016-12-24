@@ -61,7 +61,7 @@ test(function () {
 	Assert::equal(floatval(10000), $array['items'][0]['amount']);
 	Assert::equal(floatval(20000), $array['items'][1]['amount']);
 
-	$payment->setItems([]);
+	$payment->setItems(array());
 	Assert::count(0, $payment->getItems());
 });
 
@@ -78,6 +78,6 @@ test(function () {
 	Assert::equal('foo', $array['additional_params'][0]['name']);
 	Assert::equal('bar', $array['additional_params'][0]['value']);
 
-	$payment->setParameters([]);
+	$payment->setParameters(array());
 	Assert::count(0, $payment->getParameters());
 });

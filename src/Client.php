@@ -31,9 +31,9 @@ class Client
 	private $token;
 
 	/** @var array */
-	private static $services = [
+	private static $services = array(
 		'payments',
-	];
+	);
 
 	/**
 	 * @param Config $config
@@ -193,7 +193,7 @@ class Client
 	public function __get($name)
 	{
 		if (in_array($name, self::$services)) {
-			return call_user_func_array([$this, 'create' . ucfirst($name) . 'Service'], [$this]);
+			return call_user_func_array(array($this, 'create' . ucfirst($name) . 'Service'), array($this));
 		}
 
 		return NULL;

@@ -38,7 +38,7 @@ class Contact extends AbstractObject
 	 */
 	public function toArray()
 	{
-		$data = [];
+		$data = array();
 
 		if ($this->firstname) {
 			$data['first_name'] = $this->firstname;

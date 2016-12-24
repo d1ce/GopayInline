@@ -31,11 +31,11 @@ class Item extends AbstractObject
 	 */
 	public function toArray()
 	{
-		return [
+		return array(
 			'name' => $this->name,
 			'amount' => $this->getAmountInCents(),
 			'count' => $this->count,
-		];
+		);
 	}
 
 }

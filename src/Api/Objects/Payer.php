@@ -6,13 +6,13 @@ class Payer extends AbstractObject
 {
 
 	/** @var string[] */
-	public $allowedPaymentInstruments = [];
+	public $allowedPaymentInstruments = array();
 
 	/** @var string */
 	public $defaultPaymentInstrument;
 
 	/** @var string[] */
-	public $allowedSwifts = [];
+	public $allowedSwifts = array();
 
 	/** @var string */
 	public $defaultSwift;
@@ -29,7 +29,7 @@ class Payer extends AbstractObject
 	 */
 	public function toArray()
 	{
-		$data = [];
+		$data = array();
 
 		if ($this->allowedPaymentInstruments) {
 			$data['allowed_payment_instruments'] = $this->allowedPaymentInstruments;

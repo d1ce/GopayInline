@@ -11,16 +11,13 @@
     }
   ],
   "require": {
-    "php": ">=5.6",
     "ext-curl": "*",
     "ext-json": "*"
   },
   "require-dev": {
-    "ninjify/qa": "^0.3.3",
-    "ninjify/nunjuck": "^0.1.4",
     "nette/tester": "^1.7.0",
     "mockery/mockery": "^0.9.6",
-    "nette/di": "^2.4.4"
+    "nette/di": "^2.3"
   },
   "suggest": {
     "nette/di": "For GopayExtension"

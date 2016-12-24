@@ -15,19 +15,19 @@ abstract class AbstractService
 {
 
 	/** @var array */
-	public $onRequest = [];
+	public $onRequest = array();
 
 	/** @var array */
-	public $onAuthorization = [];
+	public $onAuthorization = array();
 
 	/** @var Client */
 	protected $client;
 
 	/** @var array */
-	protected $options = [
+	protected $options = array(
 		CURLOPT_SSL_VERIFYPEER => FALSE,
 		CURLOPT_RETURNTRANSFER => TRUE,
-	];
+	);
 
 	/**
 	 * @param Client $client
@@ -44,9 +44,9 @@ abstract class AbstractService
 	protected function doAuthorization($scope = Scope::PAYMENT_ALL)
 	{
 		// Invoke events
-		$this->trigger('onAuthorization', [$scope]);
+		$this->trigger('onAuthorization', array($scope));
 
-		return $this->client->authenticate(['scope' => $scope]);
+		return $this->client->authenticate(array('scope' => $scope));
 	}
 
 	/**
@@ -61,7 +61,7 @@ abstract class AbstractService
 	protected function makeRequest($method, $uri, array $data = NULL, $contentType = Http::CONTENT_JSON)
 	{
 		// Invoke events
-		$this->trigger('onRequest', [$method, $uri, $data]);
+		$this->trigger('onRequest', array($method, $uri, $data));
 
 		// Verify that client is authenticated
 		if (!$this->client->hasToken()) {
@@ -75,11 +75,11 @@ abstract class AbstractService
 		$request->setUrl(Gateway::getFullApiUrl($uri));
 
 		// Set-up headers
-		$headers = [
+		$headers = array(
 			'Accept' => 'application/json',
 			'Authorization' => 'Bearer ' . $this->client->getToken()->accessToken,
 			'Content-Type' => $contentType,
-		];
+		);
 		$request->setHeaders($headers);
 
 		// Set-up opts
@@ -90,18 +90,18 @@ abstract class AbstractService
 
 			// GET =========================================
 			case HttpClient::METHOD_GET:
-				$request->appendOpts([
+				$request->appendOpts(array(
 					CURLOPT_HTTPGET => TRUE,
-				]);
+				));
 
 				break;
 
 			// POST ========================================
 			case HttpClient::METHOD_POST:
-				$request->appendOpts([
+				$request->appendOpts(array(
 					CURLOPT_POST => TRUE,
 					CURLOPT_POSTFIELDS => $contentType === Http::CONTENT_FORM ? http_build_query($data) : json_encode($data),
-				]);
+				));
 
 				break;
 

@@ -18,7 +18,7 @@ class PaymentFactory
 	const V_PRICES = 2;
 
 	/** @var array */
-	public static $required = [
+	public static $required = array(
 		// 'target', # see at AbstractPaymentService
 		'amount',
 		'currency',
@@ -27,28 +27,28 @@ class PaymentFactory
 		'items',
 		'return_url',
 		'notify_url',
-	];
+	);
 
 	/** @var array */
-	public static $optional = [
+	public static $optional = array(
 		'target',
 		'payer',
 		'additional_params',
 		'lang',
-	];
+	);
 
 	/** @var array */
-	public static $validators = [
+	public static $validators = array(
 		self::V_SCHEME => TRUE,
 		self::V_PRICES => TRUE,
-	];
+	);
 
 	/**
 	 * @param mixed $data
 	 * @param array $validators
 	 * @return Payment
 	 */
-	public static function create($data, $validators = [])
+	public static function create($data, $validators = array())
 	{
 		// Convert to array
 		$data = (array) $data;
@@ -77,17 +77,17 @@ class PaymentFactory
 		// ### PAYER
 		if (isset($data['payer'])) {
 			$payer = new Payer;
-			self::map($payer, [
+			self::map($payer, array(
 				'allowed_payment_instruments' => 'allowedPaymentInstruments',
 				'default_payment_instrument' => 'defaultPaymentInstrument',
 				'allowed_swifts' => 'allowedSwifts',
 				'default_swift' => 'defaultSwift',
-			], $data['payer']);
+			), $data['payer']);
 			$payment->setPayer($payer);
 
 			if (isset($data['payer']['contact'])) {
 				$contact = new Contact;
-				self::map($contact, [
+				self::map($contact, array(
 					'first_name' => 'firstname',
 					'last_name' => 'lastname',
 					'email' => 'email',
@@ -96,7 +96,7 @@ class PaymentFactory
 					'street' => 'street',
 					'postal_code' => 'zip',
 					'country_code' => 'country',
-				], $data['payer']['contact']);
+				), $data['payer']['contact']);
 				$payer->contact = $contact;
 			}
 		}
@@ -104,7 +104,7 @@ class PaymentFactory
 		// ### TARGET
 		if (isset($data['target'])) {
 			$target = new Target;
-			self::map($target, ['type' => 'type', 'goid' => 'goid'], $data['target']);
+			self::map($target, array('type' => 'type', 'goid' => 'goid'), $data['target']);
 			$payment->setTarget($target);
 		}
 
@@ -124,11 +124,11 @@ class PaymentFactory
 				}
 			}
 			$item = new Item;
-			self::map($item, [
+			self::map($item, array(
 				'name' => 'name',
 				'amount' => 'amount',
 				'count' => 'count',
-			], $param);
+			), $param);
 			$payment->addItem($item);
 		}
 
@@ -136,7 +136,7 @@ class PaymentFactory
 		if (isset($data['additional_params'])) {
 			foreach ($data['additional_params'] as $param) {
 				$parameter = new Parameter;
-				self::map($parameter, ['name' => 'name', 'value' => 'value'], $param);
+				self::map($parameter, array('name' => 'name', 'value' => 'value'), $param);
 				$payment->addParameter($parameter);
 			}
 		}

@@ -20,10 +20,10 @@ class Parameter extends AbstractObject
 	 */
 	public function toArray()
 	{
-		return [
+		return array(
 			'name' => $this->name,
 			'value' => $this->value,
-		];
+		);
 	}
 
 }

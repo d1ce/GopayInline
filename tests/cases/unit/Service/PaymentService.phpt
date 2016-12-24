@@ -20,15 +20,15 @@ require __DIR__ . '/../../../bootstrap.php';
 test(function () {
 	$client = new Client(new Config(1, 2, 3));
 
-	$paymentTypes = [
+	$paymentTypes = array(
 		'createPayment' => new Payment(),
 		'createRecurrentPayment' => new RecurrentPayment(),
 		'createPreauthorizedPayment' => new PreauthorizedPayment(),
-	];
+	);
 
 	foreach ($paymentTypes as $paymentType => $payment) {
 		$payment->setAmount(100);
-		$service = Mockery::mock(PaymentsService::class, [$client])
+		$service = Mockery::mock('Markette\GopayInline\Service\PaymentsService', array($client))
 			->makePartial()
 			->shouldAllowMockingProtectedMethods();
 		$service->shouldReceive('makeRequest')->andReturn(TRUE);
@@ -43,7 +43,7 @@ test(function () {
 // Verify payment
 test(function () {
 	$urlRef = NULL;
-	$service = Mockery::mock(PaymentsService::class)
+	$service = Mockery::mock('Markette\GopayInline\Service\PaymentsService')
 		->makePartial()
 		->shouldAllowMockingProtectedMethods();
 
@@ -73,7 +73,7 @@ test(function () {
 	$payment->setTarget($target = new Target());
 	$target->goid = 99;
 
-	$service = Mockery::mock(PaymentsService::class, [$client])
+	$service = Mockery::mock('Markette\GopayInline\Service\PaymentsService', array($client))
 		->makePartial()
 		->shouldAllowMockingProtectedMethods();
 	$service->shouldReceive('makeRequest')->andReturn(TRUE);

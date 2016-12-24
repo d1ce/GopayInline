@@ -22,7 +22,7 @@ class PreauthorizedPayment extends Payment
 	 */
 	public function setPreauthorization($preauth)
 	{
-		$this->preauthorization = boolval($preauth);
+		$this->preauthorization = (bool) $preauth;
 	}
 
 	/**

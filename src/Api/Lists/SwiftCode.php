@@ -34,7 +34,7 @@ class SwiftCode
 	 */
 	public static function cz()
 	{
-		return [
+		return array(
 			self::CESKA_SPORITELNA,
 			self::KOMERCNI_BANKA,
 			self::RAIFFEISENBANK,
@@ -42,7 +42,7 @@ class SwiftCode
 			self::FIO_BANKA,
 			self::CSOB,
 			self::ERA,
-		];
+		);
 	}
 
 	/**
@@ -50,7 +50,7 @@ class SwiftCode
 	 */
 	public static function sk()
 	{
-		return [
+		return array(
 			self::VSEOBECNA_VEROVA_BANKA_BANKA,
 			self::TATRA_BANKA,
 			self::UNICREDIT_BANK_SK,
@@ -59,7 +59,7 @@ class SwiftCode
 			self::POSTOVA_BANKA,
 			self::CSOB_SK,
 			self::SBERBANK_SLOVENSKO,
-		];
+		);
 	}
 
 }

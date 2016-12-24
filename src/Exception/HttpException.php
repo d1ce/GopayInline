@@ -18,7 +18,7 @@ class HttpException extends GopayException
 		$scope = isset($error->scope) ? '(' . $error->scope . ')' : NULL;
 		$code = isset($error->error_code) ? '#' . $error->error_code : NULL;
 
-		$parts = array_filter([$code, $scope, $field, $message], function ($item) {
+		$parts = array_filter(array($code, $scope, $field, $message), function ($item) {
 			return $item !== NULL;
 		});
 

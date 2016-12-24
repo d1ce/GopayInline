@@ -15,23 +15,23 @@ require __DIR__ . '/../../../bootstrap.php';
 
 // FALSE response
 test(function () {
-	$io = Mockery::mock(Io::class);
+	$io = Mockery::mock('Markette\GopayInline\Http\Io');
 	$io->shouldReceive('call')->andReturn(FALSE);
 	$http = new HttpClient();
 	$http->setIo($io);
 
 	Assert::throws(function () use ($http) {
 		$http->doRequest(new Request());
-	}, HttpException::class);
+	}, 'Markette\GopayInline\Exception\HttpException');
 });
 
 // Error response
 test(function () {
-	$error = (object) ['error_code' => 500, 'scope' => 'S', 'field' => 'F', 'message' => 'M'];
-	$io = Mockery::mock(Io::class);
+	$error = (object) array('error_code' => 500, 'scope' => 'S', 'field' => 'F', 'message' => 'M');
+	$io = Mockery::mock('Markette\GopayInline\Http\Io');
 	$io->shouldReceive('call')->andReturnUsing(function () use ($error) {
 		$r = new Response();
-		$r->setData(['errors' => [$error]]);
+		$r->setData(array('errors' => array($error)));
 
 		return $r;
 	});
@@ -40,13 +40,13 @@ test(function () {
 
 	Assert::throws(function () use ($http, $error) {
 		$http->doRequest(new Request());
-	}, HttpException::class, HttpException::format($error));
+	}, 'Markette\GopayInline\Exception\HttpException', HttpException::format($error));
 });
 
 // Success response
 test(function () {
-	$data = ['a' => 'b'];
-	$io = Mockery::mock(Io::class);
+	$data = array('a' => 'b');
+	$io = Mockery::mock('Markette\GopayInline\Http\Io');
 	$io->shouldReceive('call')->andReturnUsing(function () use ($data) {
 		$r = new Response();
 		$r->setData($data);

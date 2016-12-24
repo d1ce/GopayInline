@@ -21,21 +21,21 @@ test(function () {
 		$class = $loader->load(function (Compiler $compiler) {
 			$compiler->addExtension('gopay', new GopayExtension());
 		}, 'c1');
-	}, AssertionException::class);
+	}, 'Nette\Utils\AssertionException');
 });
 
 // Configuration (pass parameters DEVELOPMENT)
 test(function () {
 	$loader = new ContainerLoader(TEMP_DIR);
 	$class = $loader->load(function (Compiler $compiler) {
-		$compiler->addConfig(['gopay' => ['goId' => 1, 'clientId' => 2, 'clientSecret' => '3']]);
+		$compiler->addConfig(array('gopay' => array('goId' => 1, 'clientId' => 2, 'clientSecret' => '3')));
 		$compiler->addExtension('gopay', new GopayExtension());
 	}, 'c2');
 	/** @var Container $container */
 	$container = new $class;
 
 	/** @var Client $client */
-	$client = $container->getByType(Client::class);
+	$client = $container->getByType('Markette\GopayInline\Client');
 
 	Assert::equal(1, $client->getGoId());
 	Assert::equal(2, $client->getClientId());
@@ -46,14 +46,14 @@ test(function () {
 test(function () {
 	$loader = new ContainerLoader(TEMP_DIR);
 	$class = $loader->load(function (Compiler $compiler) {
-		$compiler->addConfig(['gopay' => ['goId' => 11, 'clientId' => 22, 'clientSecret' => '33', 'test' => FALSE]]);
+		$compiler->addConfig(array('gopay' => array('goId' => 11, 'clientId' => 22, 'clientSecret' => '33', 'test' => FALSE)));
 		$compiler->addExtension('gopay', new GopayExtension());
 	}, 'c3');
 	/** @var Container $container */
 	$container = new $class;
 
 	/** @var Client $client */
-	$client = $container->getByType(Client::class);
+	$client = $container->getByType('Markette\GopayInline\Client');
 
 	Assert::equal(11, $client->getGoId());
 	Assert::equal(22, $client->getClientId());

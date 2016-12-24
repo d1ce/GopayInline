@@ -23,8 +23,8 @@ test(function () {
 test(function () {
 	$r = new Response();
 
-	$r->setData($data = ['a' => 'b']);
-	$r->setHeaders($headers = ['h' => 1]);
+	$r->setData($data = array('a' => 'b'));
+	$r->setHeaders($headers = array('h' => 1));
 	$r->setCode($code = 200);
 
 	Assert::true($r->isSuccess());
@@ -40,7 +40,7 @@ test(function () {
 // Array access
 test(function () {
 	$r = new Response();
-	$r->setData($data = ['a' => 'b']);
+	$r->setData($data = array('a' => 'b'));
 
 	Assert::equal($data['a'], $r['a']);
 	Assert::true($r->offsetExists('a'));
@@ -67,14 +67,14 @@ test(function () {
 	$r = new Response();
 	Assert::count(0, $r);
 
-	$r->setData($data = ['a' => 'b']);
+	$r->setData($data = array('a' => 'b'));
 	Assert::count(1, $r);
 });
 
 // Iterator
 test(function () {
 	$r = new Response();
-	$r->setData($data = ['a' => 'b']);
+	$r->setData($data = array('a' => 'b'));
 	Assert::equal($data, iterator_to_array($r));
 });
 
@@ -82,7 +82,7 @@ test(function () {
 test(function () {
 	$r = new Response();
 	$r->setCode($code = 200);
-	$r->setData($data = ['a' => 'b']);
+	$r->setData($data = array('a' => 'b'));
 
 	Assert::equal($data, $r->data);
 	Assert::equal($data['a'], $r->data['a']);

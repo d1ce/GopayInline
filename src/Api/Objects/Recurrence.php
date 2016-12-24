@@ -23,11 +23,11 @@ class Recurrence extends AbstractObject
 	 */
 	public function toArray()
 	{
-		return [
+		return array(
 			'recurrence_cycle' => $this->cycle,
 			'recurrence_period' => $this->period,
 			'recurrence_date_to' => $this->dateTo,
-		];
+		);
 	}
 
 }

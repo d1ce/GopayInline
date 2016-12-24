@@ -20,12 +20,12 @@ require __DIR__ . '/../../bootstrap.php';
 // Default Auth/Http
 test(function () {
 	$config = new Config(1, 2, 3);
-	$mock = Mockery::mock(Client::class, [$config])
+	$mock = Mockery::mock('Markette\GopayInline\Client', array($config))
 		->makePartial()
 		->shouldAllowMockingProtectedMethods();
 
-	Assert::type(Http::class, $mock->getHttp());
-	Assert::type(Auth::class, $mock->getAuth());
+	Assert::type('Markette\GopayInline\Http\Http', $mock->getHttp());
+	Assert::type('Markette\GopayInline\Auth\Auth', $mock->getAuth());
 });
 
 // Token
@@ -49,8 +49,8 @@ test(function () {
 	$config = new Config(1, 2, 3);
 	$client = new Client($config);
 
-	Assert::type(PaymentsService::class, $client->createPaymentsService());
-	Assert::type(PaymentsService::class, $client->payments);
+	Assert::type('Markette\GopayInline\Service\PaymentsService', $client->createPaymentsService());
+	Assert::type('Markette\GopayInline\Service\PaymentsService', $client->payments);
 	Assert::null($client->random);
 });
 
@@ -61,7 +61,7 @@ test(function () {
 
 	Assert::throws(function () use ($client) {
 		$client->call(new Request());
-	}, GopayException::class);
+	}, 'Markette\GopayInline\Exception\GopayException');
 });
 
 // Auth
@@ -70,15 +70,15 @@ test(function () {
 	$client = new Client($config);
 	$token = 12345;
 
-	$mock = Mockery::mock(Auth::class);
+	$mock = Mockery::mock('Markette\GopayInline\Auth\Auth');
 	$mock->shouldReceive('authenticate')->andReturnUsing(function () use ($token) {
 		$r = new Response();
-		$r->setData(['access_token' => $token]);
+		$r->setData(array('access_token' => $token));
 
 		return $r;
 	});
 	$client->setAuth($mock);
-	$client->authenticate([]);
+	$client->authenticate(array());
 
 	Assert::equal($token, $client->getToken()->accessToken);
 });
@@ -88,9 +88,9 @@ test(function () {
 	$config = new Config(1, 2, 3);
 	$client = new Client($config);
 	$client->setToken(12345);
-	$data = ['foo' => 'bar'];
+	$data = array('foo' => 'bar');
 
-	$mock = Mockery::mock(Http::class);
+	$mock = Mockery::mock('Markette\GopayInline\Http\Http');
 	$mock->shouldReceive('doRequest')->andReturnUsing(function () use ($data) {
 		$r = new Response();
 		$r->setData($data);
@@ -100,6 +100,6 @@ test(function () {
 	$client->setHttp($mock);
 	$response = $client->call(new Request());
 
-	Assert::type(Response::class, $response);
+	Assert::type('Markette\GopayInline\Http\Response', $response);
 	Assert::equal($data, $response->getData());
 });

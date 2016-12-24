@@ -77,7 +77,7 @@ class PaymentsService extends AbstractPaymentService
 	public function refundPayment($id, $amount)
 	{
 		// Make request
-		return $this->makeRequest('POST', 'payments/payment/' . $id . '/refund', ['amount' => round($amount * 100)], Http::CONTENT_FORM);
+		return $this->makeRequest('POST', 'payments/payment/' . $id . '/refund', array('amount' => round($amount * 100)), Http::CONTENT_FORM);
 	}
 
 }

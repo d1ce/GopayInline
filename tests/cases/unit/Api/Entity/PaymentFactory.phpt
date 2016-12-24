@@ -15,13 +15,13 @@ require __DIR__ . '/../../../../bootstrap.php';
 // Required fields
 test(function () {
 	Assert::throws(function () {
-		PaymentFactory::create([]);
-	}, ValidationException::class, '%a%' . implode(', ', PaymentFactory::$required) . '%a%');
+		PaymentFactory::create(array());
+	}, 'Markette\GopayInline\Exception\ValidationException', '%a%' . implode(', ', PaymentFactory::$required) . '%a%');
 });
 
 // Not allowed field
 test(function () {
-	$required = [
+	$required = array(
 		'amount' => 1,
 		'currency' => 2,
 		'order_number' => 3,
@@ -29,25 +29,25 @@ test(function () {
 		'items' => 5,
 		'return_url' => 6,
 		'notify_url' => 7,
-	];
-	$fields = [
+	);
+	$fields = array(
 		'foo' => 8,
 		'bar' => 9,
-	];
+	);
 	Assert::throws(function () use ($required, $fields) {
 		PaymentFactory::create(array_merge($required, $fields));
-	}, ValidationException::class, '%a%' . implode(', ', array_keys($fields)) . '%a%');
+	}, 'Markette\GopayInline\Exception\ValidationException', '%a%' . implode(', ', array_keys($fields)) . '%a%');
 });
 
 // Simple payment
 test(function () {
-	$data = [
-		'payer' => [
+	$data = array(
+		'payer' => array(
 			'default_payment_instrument' => 'BANK_ACCOUNT',
-			'allowed_payment_instruments' => ['BANK_ACCOUNT'],
+			'allowed_payment_instruments' => array('BANK_ACCOUNT'),
 			'default_swift' => 'FIOBCZPP',
-			'allowed_swifts' => ['FIOBCZPP', 'BREXCZPP'],
-			'contact' => [
+			'allowed_swifts' => array('FIOBCZPP', 'BREXCZPP'),
+			'contact' => array(
 				'first_name' => 'Zbynek',
 				'last_name' => 'Zak',
 				'email' => 'zbynek.zak@gopay.cz',
@@ -56,111 +56,111 @@ test(function () {
 				'street' => 'Plana 67',
 				'postal_code' => '373 01',
 				'country_code' => 'CZE',
-			],
-		],
-		'target' => [
+			),
+		),
+		'target' => array(
 			'goid' => 123456,
 			'type' => TargetType::ACCOUNT,
-		],
+		),
 		'amount' => 200,
 		'currency' => 'CZK',
 		'order_number' => '001',
 		'order_description' => 'pojisteni01',
-		'items' => [
-			['name' => 'item01', 'amount' => 50, 'count' => 2],
-			['name' => 'item02', 'amount' => 100],
-		],
-		'additional_params' => [
-			['name' => 'invoicenumber', 'value' => '2015001003'],
-		],
+		'items' => array(
+			array('name' => 'item01', 'amount' => 50, 'count' => 2),
+			array('name' => 'item02', 'amount' => 100),
+		),
+		'additional_params' => array(
+			array('name' => 'invoicenumber', 'value' => '2015001003'),
+		),
 		'return_url' => 'http://www.eshop.cz/return',
 		'notify_url' => 'http://www.eshop.cz/notify',
 		'lang' => 'cs',
-	];
+	);
 
 	$payment = PaymentFactory::create($data);
-	Assert::type(Payment::class, $payment);
+	Assert::type('Markette\GopayInline\Api\Entity\Payment', $payment);
 });
 
 // Validate order price and items price
 test(function () {
-	$data = [
+	$data = array(
 		'amount' => 200,
 		'currency' => 2,
 		'order_number' => 3,
 		'order_description' => 4,
-		'items' => [
-			['name' => 'Item 01', 'amount' => 50, 'count' => 2],
-			['name' => 'Item 01', 'amount' => 50],
-		],
+		'items' => array(
+			array('name' => 'Item 01', 'amount' => 50, 'count' => 2),
+			array('name' => 'Item 01', 'amount' => 50),
+		),
 		'return_url' => 6,
 		'notify_url' => 7,
-	];
+	);
 
 	Assert::throws(function () use ($data) {
 		PaymentFactory::create($data);
-	}, ValidationException::class, '%a% (200) %a% (150) %a%');
+	}, 'Markette\GopayInline\Exception\ValidationException', '%a% (200) %a% (150) %a%');
 });
 
 // Validate items name
 test(function () {
-	$data = [
+	$data = array(
 		'amount' => 200,
 		'currency' => 2,
 		'order_number' => 3,
 		'order_description' => 4,
-		'items' => [
-			['amount' => 50],
-		],
+		'items' => array(
+			array('amount' => 50),
+		),
 		'return_url' => 6,
 		'notify_url' => 7,
-	];
+	);
 
 	Assert::throws(function () use ($data) {
 		PaymentFactory::create($data);
-	}, ValidationException::class, "Item's name can't be empty or null.");
+	}, 'Markette\GopayInline\Exception\ValidationException', "Item's name can't be empty or null.");
 });
 
 // Turn off validators
 test(function () {
 	// Invalid total price and items price
-	$data = [
+	$data = array(
 		'amount' => 200,
 		'currency' => 2,
 		'order_number' => 3,
 		'order_description' => 4,
-		'items' => [
-			['name' => 'Item 01', 'amount' => 50],
-			['name' => 'Item 02', 'amount' => 50],
-		],
+		'items' => array(
+			array('name' => 'Item 01', 'amount' => 50),
+			array('name' => 'Item 02', 'amount' => 50),
+		),
 		'return_url' => 6,
 		'notify_url' => 7,
-	];
+	);
 
 	try {
-		PaymentFactory::create($data, [PaymentFactory::V_PRICES => FALSE]);
+		PaymentFactory::create($data, array(PaymentFactory::V_PRICES => FALSE));
 	} catch (Exception $e) {
 		Assert::fail('Exception should not have been threw', $e, NULL);
 	}
 
 	// Invalid scheme
-	$data = [
+	$data = array(
 		'amount' => 100,
 		'currency' => 2,
 		'order_number' => 3,
 		'order_description' => 4,
-		'items' => [
-			['amount' => 50],
-			['amount' => 50],
-		],
+		'items' => array(
+			array('amount' => 50),
+			array('amount' => 50),
+		),
 		'return_url' => 6,
 		'notify_url' => 7,
 		'x_unknown' => 1234,
 		'y_foobar' => 5678,
-	];
+	);
 
 	try {
-		PaymentFactory::create($data, [PaymentFactory::V_SCHEME => FALSE]);
+		PaymentFactory::create($data, array(PaymentFactory::V_SCHEME => FALSE));
 	} catch (Exception $e) {
 		Assert::fail('Exception should not have been threw', $e, NULL);
 	}

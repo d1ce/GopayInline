@@ -41,27 +41,27 @@ class Oauth2Client implements Auth
 		$request->setUrl(Gateway::getOauth2TokenUrl());
 
 		// Prepare data
-		$args = [
+		$args = array(
 			'grant_type' => 'client_credentials',
 			'scope' => $credentials['scope'],
-		];
+		);
 		$data = http_build_query($args);
 
 		// Set-up headers
-		$headers = [
+		$headers = array(
 			'Accept' => 'application/json',
 			'Content-Type' => 'application/x-www-form-urlencoded',
-		];
+		);
 		$request->setHeaders($headers);
 
 		// Set-up opts
-		$opts = [
+		$opts = array(
 			CURLOPT_SSL_VERIFYPEER => FALSE,
 			CURLOPT_POST => TRUE,
 			CURLOPT_RETURNTRANSFER => TRUE,
 			CURLOPT_USERPWD => $this->client->getClientId() . ':' . $this->client->getClientSecret(),
 			CURLOPT_POSTFIELDS => $data,
-		];
+		);
 		$request->setOpts($opts);
 
 		// Make request

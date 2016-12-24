@@ -29,7 +29,7 @@ class Payment extends AbstractEntity
 	protected $orderDescription;
 
 	/** @var Item[] */
-	protected $items = [];
+	protected $items = array();
 
 	/** @var string */
 	protected $returnUrl;
@@ -38,7 +38,7 @@ class Payment extends AbstractEntity
 	protected $notifyUrl;
 
 	/** @var Parameter[] */
-	protected $parameters = [];
+	protected $parameters = array();
 
 	/** @var string */
 	protected $lang;
@@ -266,7 +266,7 @@ class Payment extends AbstractEntity
 	 */
 	protected function formatItems($items)
 	{
-		if (!$items) return [];
+		if (!$items) return array();
 
 		// Format items
 		return array_map(function (Item $item) {
@@ -280,7 +280,7 @@ class Payment extends AbstractEntity
 	 */
 	protected function formatParameters($parameters)
 	{
-		if (!$parameters) return [];
+		if (!$parameters) return array();
 
 		// Format items
 		return array_map(function (Parameter $param) {
@@ -297,7 +297,7 @@ class Payment extends AbstractEntity
 	 */
 	public function toArray()
 	{
-		$data = [];
+		$data = array();
 
 		$data['target'] = $this->target->toArray();
 
@@ -309,7 +309,7 @@ class Payment extends AbstractEntity
 
 		$data['items'] = $this->formatItems($this->getItems());
 
-		$data['callback'] = [];
+		$data['callback'] = array();
 		$data['callback']['return_url'] = $this->getReturnUrl();
 		$data['callback']['notification_url'] = $this->getNotifyUrl();
 

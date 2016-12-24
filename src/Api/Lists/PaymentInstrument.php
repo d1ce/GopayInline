@@ -34,7 +34,7 @@ class PaymentInstrument
 	 */
 	public static function all()
 	{
-		return [
+		return array(
 			self::PAYMENT_CARD,
 			self::BANK_ACCOUNT,
 			self::PRSMS,
@@ -43,7 +43,7 @@ class PaymentInstrument
 			self::SUPERCASH,
 			self::GOPAY,
 			self::PAYPAL,
-		];
+		);
 	}
 
 }

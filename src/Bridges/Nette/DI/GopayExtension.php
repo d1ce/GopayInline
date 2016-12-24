@@ -12,12 +12,12 @@ class GopayExtension extends CompilerExtension
 {
 
 	/** @var array */
-	private $defaults = [
+	private $defaults = array(
 		'goId' => NULL,
 		'clientId' => NULL,
 		'clientSecret' => NULL,
 		'test' => TRUE,
-	];
+	);
 
 	/**
 	 * Register services
@@ -35,14 +35,14 @@ class GopayExtension extends CompilerExtension
 		Validators::assertField($config, 'test', 'bool');
 
 		$builder->addDefinition($this->prefix('client'))
-			->setClass(Client::class, [
-				new Statement(Config::class, [
+			->setClass('Markette\GopayInline\Client', array(
+				new Statement('Markette\GopayInline\Config', array(
 					$config['goId'],
 					$config['clientId'],
 					$config['clientSecret'],
 					$config['test'] !== FALSE ? Config::TEST : Config::PROD,
-				]),
-			]);
+				)),
+			));
 	}
 
 }

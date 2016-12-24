@@ -9,13 +9,13 @@ class Request
 	protected $url;
 
 	/** @var array */
-	protected $headers = [];
+	protected $headers = array();
 
 	/** @var array */
-	protected $opts = [];
+	protected $opts = array();
 
 	/** @var array */
-	protected $data = [];
+	protected $data = array();
 
 	/**
 	 * @return string
